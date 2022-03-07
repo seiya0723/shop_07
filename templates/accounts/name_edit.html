@@ -1,0 +1,28 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+{% load param_change %}
+
+{% block content %}
+        <nav>
+            <ul class="gnavi">
+                <li><a href="/">ご注文履歴</a></li>
+                <li><a href="/">お気に入り一覧</a></li>
+                <li class="current"><a href="{% url 'accounts:my_page' user.id %}">会員情報編集</a></li>
+                <li><a class="nav-link" href="{% url 'shop:cart' %}">お届け先一覧</a></li>
+                <li><a href="{% url 'shop:contact' %}">退会手続き</a></li>
+
+            </ul>
+        </nav>
+
+        <form method="POST">
+            {% csrf_token %}
+            <ul>
+                <li>ユーザー名: <input type="text" name="username" value="{{ user.username }}"></li>
+                <li>新しい名前: <input type="text" name="name" value="{{ user.name }}"></li>
+                <li>ふりがな: <input type="text" name="name_kana" value="{{ user.name_kana }}"></li>
+                <li><input type="submit" value="変更を保存"></li>
+            </ul>
+
+        </form>
+
+{% endblock %}

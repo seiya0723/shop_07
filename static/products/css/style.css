@@ -1,0 +1,38 @@
+#column ul {
+	/*width: calc(100 + 20px);
+	margin: 0 -10px;*/
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#column li {
+	padding: 0 10px 20px;
+	list-style: none;
+	text-align: center;
+}
+
+#column li img{
+    width: 50%;
+}
+
+#column li a,
+#column li a:visited {
+	text-decoration: none;
+	color: #111;
+}
+
+#column li p {
+	font-size: 90%;
+	margin-bottom: 3px;
+}
+
+#column li span {
+	font-size: 80%;
+	display: block;
+}
+
+.column03 li {
+	width: calc(33.3333% - 20px);
+}
+
+/* ------------------------------------------------------------------------------------------------------------------- */

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ECサイト</title>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+    <script src="{% static 'common/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'common/js/slick.min.js' %}"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="containers">
+
+        <header class="header_">
+            <div class="header__inner_">
+                <div class="header_title_">
+                    <a class="navbar-brand" href="{% url 'shop:home' %}">ECサイト</a>
+                </div>
+                <nav>
+                    <ul class="gnavi">
+                        <li><a href="{% url 'shop:home' %}">ホーム</a></li>
+                        <li><a href="{% url 'shop:list' %}">Product</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'accounts:my_page' user.id %}">アカウント</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                        {% endif %}
+                        <li class="current"><a class="nav-link" href="{% url 'shop:cart' %}">カート<span class="badge badge-pill badge-warning">{{ request.num }}</span></a></li>
+
+                        <li><a href="{% url 'shop:contact' %}">CONTACT</a></li>
+                        <li>
+                            <form role="search" action="{% url 'shop:search' %}" method="GET">
+                                <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">{% block content %} {% endblock %}</div>
+    </div> <!-- containers -->
+    <footer class="py-2 bg-dark">
+        <p class="m-0 text-center text-white">
+            &copy; ECsite
+        </p>
+    </footer>
+</div> <!-- wrapper -->
+</body>
+</html>

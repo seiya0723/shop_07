@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>商品登録</title>
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+    <script src="{% static 'products/js/script.js' %}"></script>
+    <script src="{% static 'products/js/jquery-3.6.0.min.js' %}"></script>
+</head>
+<body>
+
+<h4>カテゴリー名(親)</h4>
+<form method="POST" action="{% url 'shop:category_parent' %}">
+    {% csrf_token %}
+    <p>カテゴリー名:</p>
+    <input type="text" name="name" placeholder="書籍">
+    <input type="submit" value="登録">
+</form>
+
+<h4>カテゴリー名(子)</h4>
+<form method="POST" action="{% url 'shop:category_child' %}">
+    {% csrf_token %}
+    <p>カテゴリー名:</p>
+    <select name="category">
+        <option value="">未選択</option>
+        {% for category in category %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="name" placeholder="書籍">
+    <input type="submit" value="登録">
+</form>
+
+<h4>商品名</h4>
+<form method="POST" enctype="multipart/form-data" action="{% url 'shop:products' %}">
+    {% csrf_token %}
+
+    <p>カテゴリー:</p>
+    <select name="category">
+        <option value="">未選択</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <p>サムネイル</p>
+    <input type="file" name="image">
+
+    <p>商品名:</p>
+    <input type="text" name="name">
+
+    <p>値段:</p>
+    <input type="number" name="price">
+
+    <p>運用状況:</p>
+    <input type="checkbox" name="situation">
+
+    <p>在庫数</p>
+    <input type="number" name="stock">
+
+    <p>説明</p>
+    <textarea name="description"></textarea>
+    <input type="submit" value="登録">
+</form>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data" action="{% url 'shop:products_images' %}">
+    {% csrf_token %}
+    <div id="image_area">
+        <p>画像登録:</p>
+        <input class="input_image" type="file" name="image">
+    </div>
+    <p>商品</p>
+
+    <select name="product">
+        <option value="">未指定</option>
+        {% for product in products %}
+        <option value="{{ product.id }}">{{ product.name }}</option>
+        {% endfor %}
+    </select>
+
+    {# Ajax仕様の送信ボタンに仕立てる。ID名を指定して、type="button"にする。 #}
+
+    {# <input type="submit" value="登録"> #}
+
+    <input id="image_submit" type="button" value="登録(Ajax)">
+</form>
+
+<a href="{% url 'shop:home' %}">戻る</a>
+</body>
+</html>

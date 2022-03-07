@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'shop/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/css/slick.css' %}">
+
+    <title>ECサイト</title>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+    <script src="{% static 'shop/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'products/js/slick.min.js' %}"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="containers">
+
+        <header class="header_">
+            <div class="header__inner_">
+                <div class="header_title_">
+                    <a class="navbar-brand" href="{% url 'shop:home' %}">ECサイト</a>
+                    <form role="search" action="{% url 'shop:search' %}" method="GET">
+                        <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">
+                    </form>
+                </div>
+                <nav>
+                    <ul class="gnavi">
+                        <li class="current"><a href="{% url 'shop:home' %}">ホーム</a></li>
+                        <li class="has-child"><a href="{% url 'shop:list' %}">Product</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'accounts:my_page' user.id %}">アカウント</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                        {% endif %}
+                        <li><a class="nav-link" href="{% url 'shop:cart' %}">カート<span
+                                class="badge badge-pill badge-warning">{{ request.num }}</span></a></li>
+
+                        <li><a href="{% url 'shop:contact' %}">CONTACT</a></li>
+<!--                        <li>-->
+<!--                            <form role="search" action="{% url 'shop:search' %}" method="GET">-->
+<!--                                <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">-->
+<!--                            </form>-->
+<!--                        </li>-->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="containeR">
+            <div class="category">
+                <ul>
+                    {% for categories in categories %}
+                    <li><h5>{{ categories.name }}</h5></li>
+                    {% for category in category %}
+                    {% if categories.id == category.category_id %}
+                    <li><a href="{% url 'shop:category' category.id %}">{{ category.name }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="text-center my-5">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card img-thumbnail itemlist mb-3">
+                            {% if product.image.url != Null %}
+                            <img src="{{ product.image.url }}">
+                            {% elif products.image != Null %}
+                            <img src="{{ image.image.url }}">
+                            {% else %}
+                            <img src="/media/shop/product_image/images/no_image.png">
+                            {% endif %}
+                            <div class="card-body text-center px-2 py-3">
+                                <p class="mb-0 text-secondary">{{ product.category }}</p>
+                                <h5 class="font-weight-bold">{{ product.name }}</h5>
+                                <h4 class="font-weight-bold">{{ product.price }}円</h4>
+                            </div>
+                            <a class="stretched-link" href="{% url 'shop:product_detail' product.id %}"></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> <!-- containers -->
+    <footer class="py-2 bg-dark">
+        <p class="m-0 text-center text-white">
+            &copy; ECsite
+        </p>
+    </footer>
+</div> <!-- wrapper -->
+</body>
+</html>

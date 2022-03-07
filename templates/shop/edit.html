@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>商品編集</title>
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data" action="{% url 'shop:edit' products.id %}">
+    {% csrf_token %}
+    <p>カテゴリー:</p>
+    <select name="category">
+        <option value="">未選択</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <p>商品名:</p>
+    <input type="text" name="name" value="{{ products.name }}">
+    <p>サムネイル</p>
+    <input type="file" name="image">
+    <p>値段:</p>
+    <input type="number" name="price" value="{{ products.price }}">
+    <p>運用状況:</p>
+    <input type="checkbox" name="situation">
+    <p>在庫数</p>
+    <input type="number" name="stock" value="{{ products.stock }}">
+    <p>説明</p>
+    <textarea name="description">{{ products.description }}</textarea>
+    <input type="submit" value="登録">
+</form>
+<a href="{% url 'shop:home' %}">戻る</a>
+</body>
+</html>

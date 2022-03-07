@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'shop/css/slick.css' %}">
+
+  <title>ECサイト</title>
+  <script src="{% static 'shop/js/script.js' %}"></script>
+  <script src="{% static 'shop/js/jquery-3.6.0.min.js' %}"></script>
+  <script src="{% static 'products/js/slick.min.js' %}"></script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="containers">
+
+    <header class="header_">
+      <div class="header__inner_">
+        <div class="header_title_">
+          <a class="navbar-brand" href="{% url 'shop:home' %}">ECサイト</a>
+        </div>
+        <nav>
+          <ul class="gnavi">
+            <li><a href="{% url 'shop:home' %}">ホーム</a></li>
+            <li class="has-child"><a href="{% url 'shop:list' %}">Product</a>
+              <ul>
+                {% for category in categories %}
+                <li><a href="{% url 'shop:category' category.id %}">{{ category.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'accounts:my_page' user.id %}">アカウント</a></li>
+            {% else %}
+            <li><a href="{% url 'account_login' %}">ログイン</a></li>
+            {% endif %}
+            <li class="current"><a class="nav-link" href="{% url 'shop:cart' %}">カート<span
+                    class="badge badge-pill badge-warning">{{ num }}</span></a></li>
+
+            <li><a href="{% url 'shop:contact' %}">CONTACT</a></li>
+            <li>
+              <form role="search" action="{% url 'shop:search' %}" method="GET">
+                <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">
+              </form>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="container">
+
+      <div class="my-5">
+        <h3>ショッピングカート</h3>
+      </div>
+
+      <div class="row order">
+        <div class="col-md-9 mb-5">
+          <div class="card">
+            <div class="card-body px-4 py-3">
+              {% for cart in carts %}
+              <div class="row">
+                <div class="col-md-3 text-center">
+                  <img src="{{ cart.product.image.url }}" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                  <h5>{{ cart.product.name}}</h5>
+                  <p class="mb-1">
+                    数量： {{ cart.amount }}
+                  <form action="{% url 'shop:cart_edit' cart.product.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="product" value="{{ product.id }}">
+                    <input type="hidden" name="product" value="{{ cart.product.id }}">
+                    <input type="number" name="amount" min="0">
+                    <input class="btn btn-primary" type="submit" value="カートに入れる">
+                  </form>
+                  <form action="{% url 'shop:delete' cart.product.id %}" method="POST">
+                    {% csrf_token %}
+                    <input class="btn btn-primary" type="submit" value="削除">
+                  </form>
+                  </p>
+                </div>
+                <div class="col-md-3 text-right">
+                  <p>
+                    価格：
+                    <span class="text-danger font-weight-bold">
+                {{ cart.product.price }}円
+              </span>
+                  </p>
+                </div>
+              </div>
+              {% if not forloop.last %}
+              <hr/>
+              {% endif %} {% empty %}
+              <p class="mb-3">カートは空です</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-body text-center px-2 py-3">
+              {% if total %}
+              <p>小計：<span class="font-weight-bold">{{ total }}</span>円</p>
+              <div class="mb-3">
+                <a class="btn btn-warning" href="/">レジに進む</a>
+              </div>
+              {% endif %}
+              <a class="btn btn-primary" href="{% url 'shop:home' %}">買い物を続ける</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div> <!-- containers -->
+  <footer class="py-2 bg-dark">
+    <p class="m-0 text-center text-white">
+      &copy; ECsite
+    </p>
+  </footer>
+</div> <!-- wrapper -->
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ja">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>カート</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--{% for cart in carts %}-->
+<!--<div class="border">-->
+<!--    <div>商品名:{{ cart.product.name }}</div>-->
+<!--    <div>価格:{{ cart.product.price }}</div>-->
+
+
+<!--    <div>数量:{{ cart.amount }}</div>-->
+
+<!--&lt;!&ndash;    <div>合計:{{ cart.get_total_price }}円</div>&ndash;&gt;-->
+<!--</div>-->
+
+
+<!--{% endfor %}-->
+<!--<hr>-->
+<!--小計 ({{ num }} 個の商品) (税込) : \{{ total }}-->
+
+<!--<a href="{% url 'shop:home' %}">戻る</a>-->
+
+<!--</body>-->
+<!--</html>-->

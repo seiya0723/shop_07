@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load param_change %}
+
+{% block content %}
+
+        <div class="text-center my-5">
+            <div class="row">
+                {% for content in data %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card img-thumbnail itemlist mb-3">
+                        {% if content.image != Null %}
+                        <img src="{{ content.image.url }}">
+                        {% else %}
+                        <img src="/media/shop/product_image/images/no_image.png">
+                        {% endif %}
+                        <div class="card-body text-center px-2 py-3">
+                            <p class="mb-0 text-secondary">{{ content.category }}</p>
+                            <h5 class="font-weight-bold">{{ content.name }}</h5>
+                            <h4 class="font-weight-bold">{{ content.price }}円</h4>
+                        </div>
+                        <a class="stretched-link" href="{% url 'shop:product_detail' content.id %}"></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+<main>
+    <div class="container">
+        <ul class="pagination justify-content-center">
+            {% if data.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' '1' %}"><<</a></li>
+            <li class="page-item"><a class="page-link"
+                                     href="?{% url_replace request 'page' data.previous_page_number %}"><</a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link"><<</a></li>
+            <li class="page-item"><a class="page-link"><</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link">{{ data.number }}</a></li>
+            {% if data.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' data.next_page_number %}">></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="?{% url_replace request 'page' data.paginator.num_pages %}">>></a></li>
+            {% else %}
+            <li class="page-item"><a class="page-link">></a></li>
+            <li class="page-item"><a class="page-link">></a></li>
+            {% endif %}
+        </ul>
+
+    </div>
+</main>
+
+{% endblock %}

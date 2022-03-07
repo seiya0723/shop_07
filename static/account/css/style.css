@@ -1,0 +1,461 @@
+*{
+  padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	/*line-height: 0;*/
+    background-color: white;
+    color: black;
+	font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", メイリオ, Meiryo, "ＭＳ Ｐゴシック", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/*----------------------------------------------------------------------------------------------------------------------------*/
+/* header */
+.header_ {
+	padding: 30px 4% 30px;
+	max-width: 100%;
+	background: white;
+	/*margin-bottom: 50px;*/
+}
+
+.header__inner_ {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.header__title {
+    font-size: 25px;
+}
+
+/*==================================================
+共通　横並びのための設定
+===================================*/
+
+.gnavi{
+    display: flex;
+    flex-wrap: wrap;/*スマホ表示折り返し用なのでPCのみなら不要*/
+    /*margin:0 0 50px 0;*/
+    list-style: none;
+}
+
+.gnavi li a{
+    display: block;
+    padding:10px 30px;
+    text-decoration: none;
+    color: #333;
+}
+
+.gnavi li{
+/*    margin-bottom:20px;*/
+}
+
+/*==================================================
+　5-3-3 左から右に線が伸びる（下部）
+===================================*/
+.gnavi li a{
+    /*線の基点とするためrelativeを指定*/
+  position: relative;
+}
+
+.gnavi li.current a,
+.gnavi li a:hover{
+  color:#0481A2;
+}
+
+.gnavi li a::after {
+    content: '';
+    /*絶対配置で線の位置を決める*/
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    /*線の形状*/
+    width: 80%;
+    height: 2px;
+    background:#0481A2;
+    /*アニメーションの指定*/
+    transition: all .3s;
+    transform: scale(0, 1);/*X方向0、Y方向1*/
+    transform-origin: left top;/*左上基点*/
+}
+
+/*現在地とhoverの設定*/
+.gnavi li.current a::after,
+.gnavi li a:hover::after {
+    transform: scale(1, 1);/*X方向にスケール拡大*/
+}
+
+.wrapper{
+    height: 100%;
+    min-height: 100vh;
+    position: relative;/*←相対位置*/
+    padding-bottom: 50px;/*←footerの高さ*/
+    box-sizing: border-box;/*←全て含めてmin-height:100vhに*/
+}
+
+footer{
+    width: 100%;
+    background-color: #89c7de;
+    color: #fff;
+    text-align: center;
+	padding: 30px 4% 30px;
+    box-sizing: border-box;
+
+    position: absolute;/*←絶対位置*/
+    bottom: 0; /*下に固定*/
+}
+
+.py-2 bg-dark{
+    width: 100%;
+    background-color: #89c7de;
+    color: #fff;
+    text-align: center;
+	padding: 30px 4% 30px;
+    box-sizing: border-box;
+
+    position: absolute;/*←絶対位置*/
+    bottom: 0; /*下に固定*/
+}
+
+
+
+/*========= ナビゲーションドロップダウンのためのCSS ===============*/
+
+/*==ナビゲーション全体の設定*/
+nav {
+	text-align: center;
+}
+/*ナビゲーションを横並びに*/
+nav ul {
+	list-style: none;
+	display: flex;
+	justify-content: center;
+}
+/*2階層目以降は横並びにしない*/
+nav ul ul {
+	display: block;
+}
+
+/*下の階層のulや矢印の基点にするためliにrelativeを指定*/
+nav ul li {
+	position: relative;
+}
+
+/*ナビゲーションのリンク設定*/
+nav ul li a {
+    display: block;
+    padding:10px 30px;
+    text-decoration: none;
+    color: #333;
+}
+
+nav ul li li a {
+	padding:10px 35px;
+}
+
+nav ul li a:hover {
+	color:#fff;
+}
+
+/*==矢印の設定*/
+
+/*2階層目を持つliの矢印の設定*/
+nav ul li.has-child::before {
+	content:'';
+	position: absolute;
+	left:15px;
+	top:25px;
+	width:6px;
+	height:6px;
+	border-top: 2px solid #999;
+    border-right:2px solid #999;
+    transform: rotate(135deg);
+}
+
+/*== 2・3階層目の共通設定 */
+
+/*下の階層を持っているulの指定*/
+nav li.has-child ul {
+    /*絶対配置で位置を指定*/
+	position: absolute;
+	left:0;
+	top:62px;
+	z-index: 4;
+    /*形状を指定*/
+	background:#28BFE7;
+	width:180px;
+    /*はじめは非表示*/
+	visibility: hidden;
+	opacity: 0;
+    /*アニメーション設定*/
+	transition: all .3s;
+}
+
+/*hoverしたら表示*/
+nav li.has-child:hover > ul,
+nav li.has-child ul li:hover > ul,
+nav li.has-child:active > ul,
+nav li.has-child ul li:active > ul {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*ナビゲーションaタグの形状*/
+nav li.has-child ul li a {
+	color: #fff;
+	border-bottom:solid 1px rgba(255,255,255,0.6);
+}
+
+nav li.has-child ul li:last-child a {
+	border-bottom:none;
+}
+
+nav li.has-child ul li a:hover,
+nav li.has-child ul li a:active{
+/*	background:#3577CA;*/
+}
+
+
+/*==768px以下の形状*/
+
+@media screen and (max-width:768px){
+	nav{
+		padding: 0;
+	}
+
+	nav ul{
+		display: block;
+	}
+
+	nav li.has-child ul,
+	nav li.has-child ul ul{
+  	position: relative;
+	left:0;
+	top:0;
+	width:100%;
+	visibility:visible;/*JSで制御するため一旦表示*/
+	opacity:1;/*JSで制御するため一旦表示*/
+	display: none;/*JSのslidetoggleで表示させるため非表示に*/
+	transition:none;/*JSで制御するためCSSのアニメーションを切る*/
+}
+
+nav ul li a{
+	border-bottom:1px solid #ccc;
+}
+
+/*矢印の位置と向き*/
+
+nav ul li.has-child::before{
+	left:20px;
+}
+
+nav ul ul li.has-child::before{
+    transform: rotate(135deg);
+	left:20px;
+}
+
+nav ul li.has-child.active::before{
+    transform: rotate(-45deg);
+}
+
+}
+
+
+/*==================================================
+/*機能編 7-2-1 虫眼鏡マークをクリックすると、検索窓が伸びて出現*/
+/*===================================*/
+/*========= 検索窓のためのCSS ===============*/
+
+/*検索窓のエリア*/
+ #search-wrap {
+     position: absolute;/*絶対配置にして*/
+	 z-index: 2;/*最前面に設定。数字は変更可*/
+	 top:3px;
+	 right:10px;
+}
+
+/*テキスト入力input設定*/
+ #search-text{
+	-webkit-appearance:none;/*SafariやChromeのデフォルトの設定を無効*/
+	width: 50px;/*テキスト入力エリアが伸びる前の横幅*/
+	height: 50px;
+    padding: 20px;
+    border-radius: 10px;
+	border: none;
+	background:#888 url("/media/images/icon_search.svg") no-repeat 15px center;/*虫眼鏡アイコンを背景に表示*/
+	background-size: 20px 20px;
+	transition: all 0.5s;/*transitionを使ってスムースに伸ばす*/
+	outline: none;
+	cursor: pointer;/*カーソルを指マークに*/
+    color: #fff;
+}
+
+/*テキスト入力inputにフォーカスした時の形状*/
+ #search-text:focus {
+	width: 220px;/*テキスト入力エリアが伸びる後の横幅*/
+	padding: 20px 0 20px 60px;
+}
+
+/* ------------------------------------------------------------------*/
+
+/*img {
+  max-width: 100%;
+  vertical-align: bottom;
+}
+ul {
+  list-style: none;
+}
+
+.content {
+  max-width: 1000px;
+  padding: 0 20px;
+  margin: 20px auto;
+}
+
+#mainvisual {
+  padding: 10px;
+}
+
+#thumbnail {
+  display: flex;
+}
+
+#thumbnail li {
+  width: 20%;
+  padding: 10px;
+}*/
+
+img {
+	width: 100%;
+	height: auto;
+	vertical-align: bottom;/*画像の下にできる余白を削除*/
+}
+
+.col-md-6.mb-4.text-center {
+    display: flex;
+}
+
+#mainvisual {
+    width: calc(100%-5rem);
+}
+
+#mainvisual img {
+
+}
+
+#thumbnail li {
+    width: 5rem;
+    padding: 10px;
+    list-style: none;
+    max-height: 400px;
+}
+
+/*-------------------------------------------
+SP
+-------------------------------------------*/
+@media screen and (max-width: 600px) {
+  .content {
+    padding: 0 10px;
+    margin: 10px auto;
+  }
+
+  #mainvisual {
+    padding: 5px;
+  }
+  #thumbnail li {
+    padding: 5px;
+  }
+}
+/*.body_area {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}*/
+
+#signup_form.signup ul {
+    list-style: none;
+}
+
+.body_area_inner{
+    padding:1rem;
+    border:solid 0.2rem orange;
+}
+h1 {
+    text-align:center;
+}
+.message_area ul {
+    list-style: none;
+}
+
+.menu_area {
+    display: flex;
+}
+
+.menu_area ul {
+    list-style: none;
+    margin-left: 10px;
+}
+
+ul.errorlist.nonfield {
+    list-style: none;
+    color: red;
+}
+
+ul.errorlist {
+    list-style: none;
+    color: red;
+}
+input[type="text"],input[type="password"],input[type="email"]{
+
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    font-size: 1rem;
+    color: #495057;
+    background: white;
+    border: 1px solid orange;
+    border-radius: .25rem;
+
+    box-sizing: border-box;
+}
+
+button{
+    display:block;
+    width:100%;
+    margin:0.5rem 0;
+    font-size: 1rem;
+    background:white;
+    border: 1px solid orange;
+    cursor:pointer;
+    transition:0.2s;
+
+    padding:0.5rem;
+
+    line-height: 1.5;
+
+    user-select: none;
+    text-align: center;
+    vertical-align:middle;
+}
+button:hover{
+    background:orange;
+    transition:0.2s;
+}

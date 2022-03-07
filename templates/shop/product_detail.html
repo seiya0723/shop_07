@@ -1,0 +1,110 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<div class="my-5">
+    <div class="row product">
+<!--        <div class="col-md-6 mb-4 text-center">-->
+<!--            {# imagesメソッドを実行し、商品に紐付いている全ての画像を取り出し、1個ずつループさせる。 #}-->
+<!--            {% for product_image in products.images %}-->
+<!--            -->
+<!--            {# 1個のProductImageオブジェクトを取り出し、imageフィールドからurlを出力。(※ この時、imageフィールドは入力必須になっているので、分岐の必要はない。もしimageフ>ィールドが未入力状態で.urlを参照するとエラーになる) #}-->
+<!--            <img src="{{ product_image.image.url }}" class="img-fluid">-->
+
+<!--            {% empty %}-->
+
+<!--            {# もし、商品に割り当てられた画像が一枚も無い場合は、no_imageを表示させる #}-->
+<!--            <img src="{{ products.image.url }}" class="img-fluid">-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+
+<!--        <div class="col-md-6 mb-4 text-center">-->
+<!--            <div id="mainvisual">-->
+<!--                {% if products.single_img.image != Null %}-->
+<!--                <img src="{{ products.single_img.image.url }}" class="img-fluid">-->
+<!--                {% else %}-->
+<!--                <img src="{{ products.image.url }}" class="img-fluid">-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--            <ul id="thumbnail">-->
+<!--                {% for product_image in products.images %}-->
+<!--                <li><img src="{{ product_image.image.url }}" class="img-fluid"></li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+<!--        </div>-->
+        <div class="col-md-6 mb-4 text-center">
+            <ul id="thumbnail">
+                {% for product_image in products.images %}
+                <li><img src="{{ product_image.image.url }}" class="img-fluid"></li>
+                {% endfor %}
+            </ul>
+            <div id="mainvisual">
+                {% if products.single_img.image != Null %}
+                <img src="{{ products.single_img.image.url }}" class="img-fluid">
+                {% else %}
+                <img src="{{ products.image.url }}" class="img-fluid">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body px-2 py-1">
+                    <h3>{{ products.name }}</h3>
+                    <p class="mb-3">{{ products.category }}</p>
+                    <hr/>
+                    <p>
+                        価格：<span class="text-danger font-weight-bold">{{ products.price }}円</span>
+                    </p>
+                    <p class="font-weight-bold">商品説明</p>
+                    <p>{{ products.description|linebreaksbr }}</p>
+                    <form action="{% url 'shop:product_detail' products.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="number" name="amount" value="1" min="1">
+                        <input class="btn btn-primary" type="submit" value="カートに入れる">
+                    </form>
+                    <p class="mb-3">在庫: {{ products.stock }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!--{% load static %}-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="ja">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>{{ products.name }}</title>-->
+<!--    <link rel="stylesheet" href="{% static 'products/css/product_detail.css' %}">-->
+<!--    <link rel="stylesheet" href="{% static 'products/css/slick.css' %}">-->
+<!--    <script src="{% static 'products/js/jquery-3.6.0.min.js' %}"></script>-->
+<!--    <script src="{% static 'products/js/slick.min.js' %}"></script>-->
+<!--    <script src="{% static 'products/js/product_detail.js' %}"></script>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--{% if images.product_id == products.id %}-->
+<!--    {% for image in images %}-->
+<!--    <img src="{{ image.image.url }}" >-->
+<!--    {% endfor %}-->
+<!--{% elif products.image != Null %}-->
+<!--    <img src="{{ products.image.url }}">-->
+<!--{% else %}-->
+<!--<img src="/media/shop/product_image/images/no_image.png">-->
+<!--{% endif %}-->
+
+<!--{{ products.name }}-->
+<!--{{ products.price }}-->
+<!--{{ products.description }}-->
+
+<!--<form action="{% url 'products:product_detail' products.id %}" method="POST">-->
+<!--    {% csrf_token %}-->
+<!--    <input type="number" name="amount" value="1" min="1">-->
+<!--    <input class="btn btn-outline-success" type="submit" value="カートに入れる">-->
+<!--</form>-->
+
+<!--<a href="{% url 'shop:home' %}">戻る</a>-->
+
+<!--</body>-->
+<!--</html>-->

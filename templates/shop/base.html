@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+
+    <title>ECサイト</title>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+    <script src="{% static 'common/js/jquery-3.6.0.min.js' %}"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="containers">
+
+        <header class="header_">
+            <div class="header__inner_">
+                <div class="header_title_">
+                    <a class="navbar-brand" href="{% url 'shop:home' %}">ECサイト</a>
+                    <form role="search" action="{% url 'shop:search' %}" method="GET">
+                        <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">
+                    </form>
+                </div>
+                <nav>
+                    <ul class="gnavi">
+                        <li class="current"><a href="{% url 'shop:home' %}">ホーム</a></li>
+                        <li class="has-child"><a href="{% url 'shop:list' %}">Product</a>
+                            <ul>
+                                {% for category in categories %}
+                                <li><a href="{% url 'shop:category' category.id %}">{{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'accounts:my_page' user.id %}">アカウント</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                        {% endif %}
+                        <li><a class="nav-link" href="{% url 'shop:cart' %}">カート<span class="badge badge-pill badge-warning">{{ request.num }}</span></a></li>
+                        <li><a href="{% url 'shop:contact' %}">CONTACT</a></li>
+<!--                        <li>-->
+<!--                            <form role="search" action="{% url 'shop:search' %}" method="GET">-->
+<!--                                <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">-->
+<!--                            </form>-->
+<!--                        </li>-->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+        <!--    <div class="container">-->
+        <!--        <a class="navbar-brand" href="/">ECサイト</a>-->
+        <!--        <ul class="navbar-nav ml-auto">-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'shop:home' %}">ホーム</a>-->
+        <!--            </li>-->
+        <!--            {% if user.is_authenticated %}-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'accounts:my_page' user.id %}">プロフィール</a>-->
+        <!--            </li>-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>-->
+        <!--            </li>-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'shop:cart' %}">カート<span class="badge badge-pill badge-warning">{{ num }}</span></a>-->
+        <!--            </li>-->
+        <!--            {% else %}-->
+        <!--&lt;!&ndash;            <li class="nav-item">&ndash;&gt;-->
+        <!--&lt;!&ndash;                <a class="nav-link" href="{% url 'account_signup' %}">サインアップ</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;            </li>&ndash;&gt;-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>-->
+        <!--            </li>-->
+        <!--            {% endif %}-->
+        <!--            {% if user.is_staff %}-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="{% url 'shop:products' %}">商品登録</a>-->
+        <!--            </li>-->
+        <!--            {% endif %}-->
+        <!--            <li class="nav-item">-->
+        <!--                <div id="search-wrap" class="fadeUpTrigger">-->
+        <!--                    <form role="search" action="{% url 'shop:search' %}" method="GET">-->
+        <!--                        <input type="text" name="search" value="{{ request.GET.search }}" id="search-text" placeholder="検索">-->
+        <!--&lt;!&ndash;                        <input type="submit" value="検索">&ndash;&gt;-->
+        <!--                    </form>-->
+        <!--                </div>&lt;!&ndash;/search-wrap&ndash;&gt;-->
+        <!--            </li>-->
+        <!--        </ul>-->
+        <!--    </div>-->
+        <!--</nav>-->
+
+        <div class="container">{% block content %} {% endblock %}</div>
+    </div> <!-- containers -->
+    <footer class="py-2 bg-dark">
+        <p class="m-0 text-center text-white">
+            &copy; ECsite
+        </p>
+    </footer>
+</div> <!-- wrapper -->
+</body>
+</html>

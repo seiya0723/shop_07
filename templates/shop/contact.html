@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/css/contact.css' %}">
+
+    <title>ECサイト</title>
+    <script src="{% static 'shop/js/script.js' %}"></script>
+    <script src="{% static 'shop/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'products/js/slick.min.js' %}"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="containers">
+
+        <header class="header_">
+            <div class="header__inner_">
+                <div class="header_title_">
+                    <a class="navbar-brand" href="{% url 'shop:home' %}">ECサイト</a>
+                </div>
+                <nav>
+                    <ul class="gnavi">
+                        <li><a href="{% url 'shop:home' %}">ホーム</a></li>
+                        <li class="has-child"><a href="{% url 'shop:list' %}">Product</a>
+                            <ul>
+                                {% for category in categories %}
+                                <li><a href="{% url 'shop:category' category.id %}">{{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'accounts:my_page' user.id %}">アカウント</a></li>
+                        {% else %}
+                        <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                        {% endif %}
+                        <li><a class="nav-link" href="{% url 'shop:cart' %}">カート<span
+                                class="badge badge-pill badge-warning">{{ request.num }}</span></a></li>
+
+                        <li class="current"><a href="{% url 'shop:contact' %}">CONTACT</a></li>
+                        <li>
+                            <form role="search" action="{% url 'shop:search' %}" method="GET">
+                                <input type="text" name="search" value="{{ request.GET.search }}" id="search-text">
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="Form">
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>氏名</p>
+                        <input type="text" class="Form-Item-Input" placeholder="例）山田太郎" name="name">
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>メールアドレス</p>
+                        <input type="email" class="Form-Item-Input" placeholder="例）example@example.com" name="email">
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label"><span class="Form-Item-Label-Required">必須</span>件名</p>
+                        <input type="email" class="Form-Item-Input" name="title">
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label isMsg"><span class="Form-Item-Label-Required">必須</span>お問い合わせ内容</p>
+                        <textarea class="Form-Item-Textarea" name="contents"></textarea>
+                    </div>
+                    <input type="submit" class="Form-Btn" value="送信する">
+                </div>
+            </form>
+        </div>
+        <div class="container">{% block content %} {% endblock %}</div>
+    </div> <!-- containers -->
+    <footer class="py-2 bg-dark">
+        <p class="m-0 text-center text-white">
+            &copy; ECsite
+        </p>
+    </footer>
+</div> <!-- wrapper -->
+</body>
+</html>
